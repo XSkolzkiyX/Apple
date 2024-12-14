@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75c696d9215bee14e8ff6fdeee7be1d4, type: 3}
+  m_Name: M1911
+  m_EditorClassIdentifier: 
+  damage: 32
+  ammoInMag: 10
+  ammo: 120
+  bulletsPerShot: 1
+  fireRate: 0
+  aimShootingSpread: 0
+  shootingSpread: 1
+  maxShootingSpread: 3
+  shootingSpreadIncreaseValue: 0.5
+  shootingSpreadDecreaseValue: 0.25
+  verticalSpray: 1
+  horizontalSpray:
+    leftDirection: 0.2
+    rightDirection: 0.1
+  reloadingDuration: 1.5
+  bulletSpeed: 18
+  bulletPrefab: {fileID: 3882421529995028313, guid: a3d259b3e192e3e409811f909c1f6e0a,
+    type: 3}
