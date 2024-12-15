@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 38
   ammoInMag: 30
-  ammo: 210
+  ammo: 300
   bulletsPerShot: 1
   fireRate: 800
   aimShootingSpread: 0.25
