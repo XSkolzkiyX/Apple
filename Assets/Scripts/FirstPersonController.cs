@@ -35,6 +35,7 @@ public class PlayerUI
 {
     public static Vector2 resolution = new Vector2(1920, 1080);
     public RectTransform crossHair;
+    public RectTransform alternateCrossHair;
     public TextMeshProUGUI ammoText;
 }
 
@@ -80,6 +81,16 @@ public class FirstPersonController : MonoBehaviour
         {
             curWeapon.player = this;
             playerUI.ammoText.text = $"{curWeapon.weaponData.ammoInMag} / {curWeapon.weaponData.ammo}";
+            playerUI.ammoText.color = Color.white;
+            playerUI.crossHair.gameObject.SetActive(true);
+            playerUI.alternateCrossHair.gameObject.SetActive(true);
+        }
+        else
+        {
+            playerUI.ammoText.text = "...";
+            playerUI.ammoText.color = Color.gray;
+            playerUI.crossHair.gameObject.SetActive(false);
+            playerUI.alternateCrossHair.gameObject.SetActive(true);
         }
     }
 
@@ -106,6 +117,7 @@ public class FirstPersonController : MonoBehaviour
             Debug.DrawLine(mainCamera.transform.position, hit.point, Color.red, 1f);
             if (!hit.transform.gameObject.Equals(interactionObject))
             {
+                if (interactionObject) interactionObject.GetComponent<Outline>().enabled = false;
                 interactionObject = hit.transform.gameObject;
                 interactionObject.GetComponent<Outline>().enabled = true;
             }
@@ -125,12 +137,14 @@ public class FirstPersonController : MonoBehaviour
         {
             curWeapon.animator.SetBool("Aim", true);
             playerUI.crossHair.gameObject.SetActive(false);
+            playerUI.alternateCrossHair.gameObject.SetActive(false);
             curWeapon.shootingSpread = curWeapon.weaponData.aimShootingSpread;
         }
         else if(Input.GetMouseButtonUp(1))
         {
             curWeapon.animator.SetBool("Aim", false);
             playerUI.crossHair.gameObject.SetActive(true);
+            playerUI.alternateCrossHair.gameObject.SetActive(true);
             curWeapon.shootingSpread = curWeapon.weaponData.shootingSpread;
         }
 
@@ -185,6 +199,10 @@ public class FirstPersonController : MonoBehaviour
         curWeapon.weaponOutline.enabled = false;
         interactionObject.layer = weapon.itemLayer;
         interactionObject = null;
+        playerUI.ammoText.text = $"{curWeapon.weaponData.ammoInMag} / {curWeapon.weaponData.ammo}";
+        playerUI.ammoText.color = Color.white;
+        playerUI.crossHair.gameObject.SetActive(true);
+        playerUI.alternateCrossHair.gameObject.SetActive(true);
     }
 
     private void DropWeapon()
@@ -197,7 +215,12 @@ public class FirstPersonController : MonoBehaviour
         curWeapon.player = null;
         curWeapon.weaponRigidbody.velocity = mainCamera.transform.forward * playerStats.throwingForce;
         curWeapon.gameObject.layer = weapon.weaponLayer;
+        curWeapon.animator.SetBool("Aim", false);
         curWeapon = null;
+        playerUI.crossHair.gameObject.SetActive(false);
+        playerUI.alternateCrossHair.gameObject.SetActive(true);
+        playerUI.ammoText.text = "...";
+        playerUI.ammoText.color = Color.gray;
     }
 
     public void TakeDamage(float damage)

@@ -10,25 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 75c696d9215bee14e8ff6fdeee7be1d4, type: 3}
-  m_Name: M4
+  m_Name: AK - 74
   m_EditorClassIdentifier: 
-  damage: 38
+  damage: 44
   ammoInMag: 30
-  ammo: 210
+  ammo: 180
   bulletsPerShot: 1
-  fireRate: 800
-  aimShootingSpread: 0.1
-  shootingSpread: 4
-  maxShootingSpread: 9
+  fireRate: 650
+  aimShootingSpread: 0.4
+  shootingSpread: 5
+  maxShootingSpread: 10
   shootingSpreadIncreaseValue: 0.75
-  shootingSpreadDecreaseValue: 0.25
-  verticalSpray: 1.2
+  shootingSpreadDecreaseValue: 0.2
+  verticalSpray: 1.8
   horizontalSpray:
-    leftDirection: 0.2
-    rightDirection: 0.1
+    leftDirection: 0.4
+    rightDirection: 0.55
   reloadingDuration: 2
   bulletSpeed: 20
   bulletPrefab: {fileID: 3882421529995028313, guid: a3d259b3e192e3e409811f909c1f6e0a,
     type: 3}
-  weaponModel: {fileID: 6014158238369886987, guid: 8b4e2090593dcb6459c4faa7f0d6849e,
+  weaponModel: {fileID: 8758221259266429706, guid: 1b2ae41ecc26f5d489e7aeadda9f9981,
     type: 3}
