@@ -72,8 +72,10 @@ public class WeaponController : MonoBehaviour
         }
         else
         {
-            mainCamera.DORotate(new Vector3(mainCamera.eulerAngles.x - weaponData.verticalSpray, mainCamera.eulerAngles.y, 0), Time.deltaTime);
-            mainCamera.parent.DORotate(new Vector3(0, mainCamera.parent.eulerAngles.y + (Random.Range(0, 2) == 0 ? -weaponData.horizontalSpray.leftDirection : weaponData.horizontalSpray.rightDirection), 0), Time.deltaTime);
+            mainCamera.Rotate(-weaponData.verticalSpray, 0, 0);
+            mainCamera.parent.Rotate(0, (Random.Range(0, 2) == 0 ? -weaponData.horizontalSpray.leftDirection : weaponData.horizontalSpray.rightDirection), 0);
+            //mainCamera.DORotate(new Vector3(mainCamera.eulerAngles.x - weaponData.verticalSpray, mainCamera.eulerAngles.y, 0), Time.deltaTime);
+            //mainCamera.parent.DORotate(new Vector3(0, mainCamera.parent.eulerAngles.y + (Random.Range(0, 2) == 0 ? -weaponData.horizontalSpray.leftDirection : weaponData.horizontalSpray.rightDirection), 0), Time.deltaTime);
         }
         animator.SetTrigger("Shoot");
         if(weaponData.fireRate > 0) Invoke(nameof(Shoot), 60.0f / weaponData.fireRate);
