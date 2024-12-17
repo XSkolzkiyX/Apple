@@ -10,25 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 75c696d9215bee14e8ff6fdeee7be1d4, type: 3}
-  m_Name: M1911
+  m_Name: M107
   m_EditorClassIdentifier: 
-  damage: 32
-  ammoInMag: 10
-  ammo: 120
+  damage: 250
+  ammoInMag: 5
+  ammo: 40
   bulletsPerShot: 1
   fireRate: 0
   aimShootingSpread: 0
-  shootingSpread: 2
-  maxShootingSpread: 4
-  shootingSpreadIncreaseValue: 0.5
-  shootingSpreadDecreaseValue: 0.25
-  verticalSpray: 1
+  shootingSpread: 6
+  maxShootingSpread: 12
+  shootingSpreadIncreaseValue: 3
+  shootingSpreadDecreaseValue: 0.1
+  verticalSpray: 3
   horizontalSpray:
-    leftDirection: 0.2
-    rightDirection: 0.1
-  reloadingDuration: 1.5
-  bulletSpeed: 18
-  bulletPrefab: {fileID: 3882421529995028313, guid: 92e67652fdc342a45b6c43838011b25f,
+    leftDirection: 0.5
+    rightDirection: 1
+  reloadingDuration: 4
+  bulletSpeed: 32
+  bulletPrefab: {fileID: 3882421529995028313, guid: a3d259b3e192e3e409811f909c1f6e0a,
     type: 3}
-  weaponModel: {fileID: 1750125871091328788, guid: 1a6e38616f4be1e4bb97f3ab0da26330,
+  weaponModel: {fileID: 4677765151892386226, guid: 2e89a0d30f6ed234d8fd05557b92fa1b,
     type: 3}
