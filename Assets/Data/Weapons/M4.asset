@@ -27,7 +27,7 @@ MonoBehaviour:
     leftDirection: 0.2
     rightDirection: 0.1
   reloadingDuration: 2
-  bulletSpeed: 20
+  bulletSpeed: 35
   bulletPrefab: {fileID: 3882421529995028313, guid: a3d259b3e192e3e409811f909c1f6e0a,
     type: 3}
   weaponModel: {fileID: 6014158238369886987, guid: 8b4e2090593dcb6459c4faa7f0d6849e,

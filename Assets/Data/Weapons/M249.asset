@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75c696d9215bee14e8ff6fdeee7be1d4, type: 3}
+  m_Name: M249
+  m_EditorClassIdentifier: 
+  damage: 50
+  ammoInMag: 120
+  ammo: 480
+  bulletsPerShot: 1
+  fireRate: 550
+  aimShootingSpread: 1
+  shootingSpread: 9
+  maxShootingSpread: 18
+  shootingSpreadIncreaseValue: 1
+  shootingSpreadDecreaseValue: 0.15
+  verticalSpray: 2
+  horizontalSpray:
+    leftDirection: 1
+    rightDirection: 1
+  reloadingDuration: 6
+  bulletSpeed: 42
+  bulletPrefab: {fileID: 3882421529995028313, guid: a3d259b3e192e3e409811f909c1f6e0a,
+    type: 3}
+  weaponModel: {fileID: 5403612206512206711, guid: 09e4061355877074e9c619df17b26581,
+    type: 3}

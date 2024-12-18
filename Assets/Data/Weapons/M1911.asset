@@ -17,9 +17,9 @@ MonoBehaviour:
   ammo: 120
   bulletsPerShot: 1
   fireRate: 0
-  aimShootingSpread: 0
-  shootingSpread: 2
-  maxShootingSpread: 4
+  aimShootingSpread: 0.25
+  shootingSpread: 3.5
+  maxShootingSpread: 7
   shootingSpreadIncreaseValue: 0.5
   shootingSpreadDecreaseValue: 0.25
   verticalSpray: 1
@@ -27,7 +27,7 @@ MonoBehaviour:
     leftDirection: 0.2
     rightDirection: 0.1
   reloadingDuration: 1.5
-  bulletSpeed: 18
+  bulletSpeed: 28
   bulletPrefab: {fileID: 3882421529995028313, guid: 92e67652fdc342a45b6c43838011b25f,
     type: 3}
   weaponModel: {fileID: 1750125871091328788, guid: 1a6e38616f4be1e4bb97f3ab0da26330,

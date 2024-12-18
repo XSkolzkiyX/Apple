@@ -137,9 +137,11 @@ public class EnemyController : MonoBehaviour
     public void Die()
     {
         Debug.Log(gameObject.name + " is DEAD");
-        Instantiate(curWeapon.weaponModel, weaponModel.position, weaponModel.rotation).GetComponent<Rigidbody>().velocity = weaponModel.forward * throwingForce;
+        Instantiate(curWeapon.weaponModel, weaponModel.position, weaponModel.rotation, transform.parent).GetComponent<Rigidbody>().velocity = weaponModel.forward * throwingForce;
         weaponModel.gameObject.SetActive(false);
+        agent.isStopped = true;
         TurnOnRagdoll();
+        Destroy(agent);
         Destroy(this);
     }
 

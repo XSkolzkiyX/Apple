@@ -22,12 +22,12 @@ MonoBehaviour:
   maxShootingSpread: 16
   shootingSpreadIncreaseValue: 1
   shootingSpreadDecreaseValue: 0.1
-  verticalSpray: 2
+  verticalSpray: 3
   horizontalSpray:
     leftDirection: 0.4
     rightDirection: 1.2
   reloadingDuration: 3
-  bulletSpeed: 15
+  bulletSpeed: 25
   bulletPrefab: {fileID: 3882421529995028313, guid: 92e67652fdc342a45b6c43838011b25f,
     type: 3}
   weaponModel: {fileID: 3048994217932476619, guid: 7756641049e3a8744a03634d0965edb6,

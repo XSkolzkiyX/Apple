@@ -6,7 +6,6 @@ public class HorizontalSpray
 {
     [Range(0, 10)] public float leftDirection;
     [Range(0, 10)] public float rightDirection;
-
 }
 
 [CreateAssetMenu(fileName = "New Weapon Data", menuName = "Data/Weapon Data")]

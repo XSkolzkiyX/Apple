@@ -46,6 +46,7 @@ public class Controls
     public KeyCode interactionKey;
     public KeyCode reloadingKey;
     public KeyCode dropKey;
+    public KeyCode hackKey;
 }
 
 public class FirstPersonController : MonoBehaviour
@@ -62,8 +63,8 @@ public class FirstPersonController : MonoBehaviour
     private bool isGrounded = false;
     private float speed;
     private Camera mainCamera;
-    private Rigidbody rb;
-    private GameObject interactionObject;
+    [HideInInspector] public Rigidbody rb;
+    [HideInInspector] public GameObject interactionObject;
 
     float moveX, moveY, moveZ;
     float rotationX, rotationY;
@@ -105,9 +106,10 @@ public class FirstPersonController : MonoBehaviour
             speed = playerStats.walkingSpeed;
         }
 
-        moveX = Input.GetAxis("Horizontal") * playerStats.acceleration;
-        moveY = isGrounded ? (Input.GetAxis("Jump") * playerStats.jumpForce) : rb.velocity.y;
-        moveZ = Input.GetAxis("Vertical") * playerStats.acceleration;
+        moveX = Input.GetAxis("Horizontal") * playerStats.acceleration * rb.mass;
+        moveY = Input.GetAxis("Jump") * playerStats.jumpForce;
+        moveY = isGrounded && moveY > 0 ? moveY : rb.velocity.y;
+        moveZ = Input.GetAxis("Vertical") * playerStats.acceleration * rb.mass;
 
         //Pick Up Weapon
 
@@ -184,6 +186,13 @@ public class FirstPersonController : MonoBehaviour
         mainCamera.transform.localEulerAngles = new Vector3(rotationY, 0, mainCamera.transform.localEulerAngles.z);
     }
 
+    private void Interact()
+    {
+        //if(interactionObject is Weapon) PickUpWeapon();
+        //else if(interactionObject is Door) door.Open();
+        //else if(interactionObject is Button) button.SpawnEnemies();
+    }
+
     private void PickUpWeapon()
     {
         if (!interactionObject) return;
@@ -199,7 +208,8 @@ public class FirstPersonController : MonoBehaviour
         curWeapon.weaponOutline.enabled = false;
         interactionObject.layer = weapon.itemLayer;
         interactionObject = null;
-        playerUI.ammoText.text = $"{curWeapon.weaponData.ammoInMag} / {curWeapon.weaponData.ammo}";
+
+        playerUI.ammoText.text = $"{curWeapon.ammoInMag} / {curWeapon.ammo}";
         playerUI.ammoText.color = Color.white;
         playerUI.crossHair.gameObject.SetActive(true);
         playerUI.alternateCrossHair.gameObject.SetActive(true);
@@ -238,7 +248,7 @@ public class FirstPersonController : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
         if (!isGrounded)
         {
