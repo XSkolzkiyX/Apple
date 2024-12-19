@@ -3,9 +3,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [System.Serializable]
-public class Weapon
+public class Interaction
 {
-    public LayerMask weaponLayer;
+    public LayerMask interactionLayer;
     public LayerMask itemLayer;
     public Transform weaponPlace;
 }
@@ -54,7 +54,7 @@ public class FirstPersonController : MonoBehaviour
     public float health;
 
     public WeaponController curWeapon;
-    public Weapon weapon;
+    public Interaction interaction;
     public PlayerStats playerStats;
     public PlayerCamera playerCamera;
     public PlayerUI playerUI;
@@ -114,7 +114,7 @@ public class FirstPersonController : MonoBehaviour
         //Pick Up Weapon
 
         if (Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward,
-            out RaycastHit hit, playerStats.interactionDistance, weapon.weaponLayer))
+            out RaycastHit hit, playerStats.interactionDistance, interaction.interactionLayer))
         {
             Debug.DrawLine(mainCamera.transform.position, hit.point, Color.red, 1f);
             if (!hit.transform.gameObject.Equals(interactionObject))
@@ -130,7 +130,7 @@ public class FirstPersonController : MonoBehaviour
             interactionObject = null;
         }
 
-        if (Input.GetKeyDown(controls.interactionKey)) PickUpWeapon();
+        if (Input.GetKeyDown(controls.interactionKey)) Interact();
         if (Input.GetKeyDown(controls.dropKey)) DropWeapon();
 
         //Weapon
@@ -188,25 +188,25 @@ public class FirstPersonController : MonoBehaviour
 
     private void Interact()
     {
-        //if(interactionObject is Weapon) PickUpWeapon();
-        //else if(interactionObject is Door) door.Open();
-        //else if(interactionObject is Button) button.SpawnEnemies();
+        if(interactionObject.TryGetComponent(out WeaponController weapon)) PickUpWeapon(weapon);
+        else if(interactionObject.TryGetComponent(out DoorController door)) door.ChangeDoorState();
+        else if(interactionObject.TryGetComponent(out ButtonController button)) button.PressButton();
     }
 
-    private void PickUpWeapon()
+    private void PickUpWeapon(WeaponController weapon)
     {
         if (!interactionObject) return;
         if (curWeapon) DropWeapon();
-        curWeapon = interactionObject.GetComponent<WeaponController>();
+        curWeapon = weapon;
         curWeapon.player = this;
-        curWeapon.transform.SetParent(weapon.weaponPlace);
+        curWeapon.transform.SetParent(interaction.weaponPlace);
         curWeapon.animator.enabled = true;
         //curWeapon.transform.position = weapon.weaponPlace.position;
         //curWeapon.transform.rotation = weapon.weaponPlace.rotation;
         curWeapon.weaponRigidbody.isKinematic = true;
         curWeapon.weaponCollider.enabled = false;
         curWeapon.weaponOutline.enabled = false;
-        interactionObject.layer = weapon.itemLayer;
+        interactionObject.layer = interaction.itemLayer;
         interactionObject = null;
 
         playerUI.ammoText.text = $"{curWeapon.ammoInMag} / {curWeapon.ammo}";
@@ -224,8 +224,9 @@ public class FirstPersonController : MonoBehaviour
         curWeapon.weaponCollider.enabled = true;
         curWeapon.player = null;
         curWeapon.weaponRigidbody.velocity = mainCamera.transform.forward * playerStats.throwingForce;
-        curWeapon.gameObject.layer = weapon.weaponLayer;
+        curWeapon.gameObject.layer = interaction.interactionLayer;
         curWeapon.animator.SetBool("Aim", false);
+        curWeapon.isReloading = false;
         curWeapon = null;
         playerUI.crossHair.gameObject.SetActive(false);
         playerUI.alternateCrossHair.gameObject.SetActive(true);
