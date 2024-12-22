@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 [System.Serializable]
@@ -13,6 +14,8 @@ public class TestChamberController : MonoBehaviour
     [SerializeField] private GameObject defaultEnemy;
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private Transform enemies;
+    public int amountOfEnemiesToSpawn = 10;
+    [Space(20)]
 
     [Header("Controls")]
     [SerializeField] private ChamberControl spawnEnemyKeys;
@@ -21,11 +24,15 @@ public class TestChamberController : MonoBehaviour
     [SerializeField] private ChamberControl refillAmmoKeys;
     [SerializeField] private ChamberControl healPlayerKeys;
 
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI amountOfEnemiesToSpawnText;
+
     private FirstPersonController player;
 
     private void Start()
     {
         player = FindFirstObjectByType<FirstPersonController>();
+        amountOfEnemiesToSpawnText.text = $"Enemies to spawn: {amountOfEnemiesToSpawn}";
     }
 
     private void Update()
@@ -34,7 +41,7 @@ public class TestChamberController : MonoBehaviour
         {
             if (Input.GetKeyDown(spawnEnemyKeys.secondaryKey))
             {
-                SpawnEnemies(10);
+                SpawnEnemies();
             }
         }
 
@@ -71,11 +78,12 @@ public class TestChamberController : MonoBehaviour
         }
     }
 
-    public void SpawnEnemies(int amountOfEnemies)
+    public void SpawnEnemies(int indexOfSpawnPoint = 0)
     {
-        for (int i = 0; i < amountOfEnemies; i++)
+        indexOfSpawnPoint--;
+        for (int i = 0; i < amountOfEnemiesToSpawn; i++)
         {
-            Instantiate(defaultEnemy, spawnPoints[Random.Range(0, spawnPoints.Length)].position, Quaternion.identity, enemies);
+            Instantiate(defaultEnemy, spawnPoints[indexOfSpawnPoint < 0 || indexOfSpawnPoint > spawnPoints.Length ? Random.Range(0, spawnPoints.Length) : indexOfSpawnPoint].position, Quaternion.identity, enemies);
         }
     }
 
@@ -108,5 +116,11 @@ public class TestChamberController : MonoBehaviour
     public void HealPlayer()
     {
         player.health = player.playerStats.health;
+    }
+
+    public void ChangeAmountOfEnemiesToSpawn(int dir)
+    {
+        amountOfEnemiesToSpawn += dir;
+        amountOfEnemiesToSpawnText.text = $"Enemies to spawn: {amountOfEnemiesToSpawn}";
     }
 }
