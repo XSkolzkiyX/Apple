@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6123266431253421403}
   - component: {fileID: 8653401429890932828}
+  - component: {fileID: 6388651346770625719}
   - component: {fileID: 3660804150817660733}
   - component: {fileID: 8782696346040384491}
   - component: {fileID: 2271266062506849865}
@@ -55,6 +56,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 1
   animator: {fileID: 0}
+--- !u!114 &6388651346770625719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3604901191489607926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10c6b233093e1c944af1654cf0268e58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  price: 2
 --- !u!114 &3660804150817660733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,7 +281,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 53
+  m_VersionIndex: 68
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []

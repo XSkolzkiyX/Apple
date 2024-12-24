@@ -12,6 +12,7 @@ public class BulletController : MonoBehaviour
         if (collider.CompareTag("Bullet") || collider.CompareTag(ownerTag)) return;
         if (collider.TryGetComponent(out EnemyController enemy)) enemy.TakeDamage(damage);
         else if (collider.TryGetComponent(out FirstPersonController player)) player.TakeDamage(damage);
+        else if(collider.TryGetComponent(out BarrelController barrel)) barrel.StartCoroutine(barrel.Explode());
         Destroy(gameObject);
     }
 }

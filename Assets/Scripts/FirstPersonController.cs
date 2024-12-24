@@ -188,9 +188,11 @@ public class FirstPersonController : MonoBehaviour
 
     private void Interact()
     {
-        if(interactionObject.TryGetComponent(out WeaponController weapon)) PickUpWeapon(weapon);
-        else if(interactionObject.TryGetComponent(out DoorController door)) door.ChangeDoorState();
-        else if(interactionObject.TryGetComponent(out ButtonController button)) button.PressButton();
+        if (!interactionObject) return;
+        if (interactionObject.TryGetComponent(out WeaponController weapon)) PickUpWeapon(weapon);
+        else if (interactionObject.TryGetComponent(out DoorController door)) door.ChangeDoorState();
+        else if (interactionObject.TryGetComponent(out ButtonController button)) button.PressButton();
+        else if (interactionObject.TryGetComponent(out BarrelController barrel)) barrel.StartCoroutine(barrel.Explode(3));
     }
 
     private void PickUpWeapon(WeaponController weapon)

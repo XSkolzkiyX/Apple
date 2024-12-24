@@ -9,6 +9,8 @@ TagManager:
   - Bullet
   - Shop
   - Enemy
+  - FxTemporaire
+  - Hackable
   layers:
   - Default
   - TransparentFX
