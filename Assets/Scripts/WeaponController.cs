@@ -46,7 +46,7 @@ public class WeaponController : MonoBehaviour
 
     public void Shoot()
     {
-        if (!isShooting || ammoInMag <= 0)
+        if (!isShooting || ammoInMag <= 0 || Time.timeScale <= 0)
         {
             isShooting = false;
             return;

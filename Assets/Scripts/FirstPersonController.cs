@@ -13,13 +13,26 @@ public class Interaction
 [System.Serializable]
 public class PlayerStats
 {
+    [Header("General")]
     public float health;
+    [Space(10)]
+
+    [Header("Movement")]
     public float acceleration;
     public float walkingSpeed;
     public float runningSpeed;
     public float jumpForce;
+    [Space(10)]
+
+    [Header("Interaction")]
     public float interactionDistance;
     public float throwingForce;
+    [Space(10)]
+
+    [Header("Fall Damage Settings")]
+    public float groundCheckDistance = 1.1f;
+    public float safeFallDistance = 3f;
+    public float fallDamageMultiplier = 10f;
 }
 
 [System.Serializable]
@@ -49,6 +62,7 @@ public class Controls
     public KeyCode hackKey;
 }
 
+[RequireComponent(typeof(Rigidbody))]
 public class FirstPersonController : MonoBehaviour
 {
     public float health;
@@ -66,8 +80,10 @@ public class FirstPersonController : MonoBehaviour
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public GameObject interactionObject;
 
-    float moveX, moveY, moveZ;
-    float rotationX, rotationY;
+    private float moveX, moveY, moveZ;
+    private float rotationX, rotationY;
+    private float lastGroundedHeight;
+    private bool wasGrounded;
 
     private void Start()
     {
@@ -168,6 +184,8 @@ public class FirstPersonController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        CheckGroundState();
+
         //Movement
         rb.AddForce(transform.right * moveX + transform.forward * moveZ);
 
@@ -208,7 +226,7 @@ public class FirstPersonController : MonoBehaviour
         curWeapon.weaponRigidbody.isKinematic = true;
         curWeapon.weaponCollider.enabled = false;
         curWeapon.weaponOutline.enabled = false;
-        interactionObject.layer = interaction.itemLayer;
+        //interactionObject.layer = interaction.itemLayer;
         interactionObject = null;
 
         playerUI.ammoText.text = $"{curWeapon.ammoInMag} / {curWeapon.ammo}";
@@ -226,7 +244,7 @@ public class FirstPersonController : MonoBehaviour
         curWeapon.weaponCollider.enabled = true;
         curWeapon.player = null;
         curWeapon.weaponRigidbody.velocity = mainCamera.transform.forward * playerStats.throwingForce;
-        curWeapon.gameObject.layer = interaction.interactionLayer;
+        //curWeapon.gameObject.layer = interaction.interactionLayer;
         curWeapon.animator.SetBool("Aim", false);
         curWeapon.isReloading = false;
         curWeapon = null;
@@ -251,16 +269,35 @@ public class FirstPersonController : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    private void OnCollisionStay(Collision collision)
+    private void CheckGroundState()
     {
-        if (!isGrounded)
+        Vector3[] rayOrigins = new Vector3[]
         {
-            isGrounded = true;
-        }
-    }
+        transform.position + Vector3.down + Vector3.left * 0.5f,  
+        transform.position + Vector3.down + Vector3.right * 0.5f, 
+        transform.position + Vector3.down + Vector3.forward * 0.5f,
+        transform.position + Vector3.down + Vector3.back * 0.5f 
+        };
 
-    private void OnCollisionExit(Collision collision)
-    {
+        RaycastHit[] hits = new RaycastHit[rayOrigins.Length];
         isGrounded = false;
+
+        for (int i = 0; i < rayOrigins.Length; i++)
+        {
+            if (Physics.Raycast(rayOrigins[i], Vector3.down, out hits[i], playerStats.groundCheckDistance))
+            {
+                Debug.DrawLine(rayOrigins[i], hits[i].point, Color.green, 1f);
+                isGrounded = true;
+                break;
+            }
+        }
+
+        if (isGrounded && !wasGrounded && lastGroundedHeight - transform.position.y > playerStats.safeFallDistance)
+            TakeDamage((lastGroundedHeight - transform.position.y - playerStats.safeFallDistance) * playerStats.fallDamageMultiplier);
+
+        if (!isGrounded && wasGrounded)
+            lastGroundedHeight = transform.position.y;
+
+        wasGrounded = isGrounded;
     }
 }

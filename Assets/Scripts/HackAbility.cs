@@ -23,6 +23,8 @@ public class HackAbility : MonoBehaviour
     [SerializeField] private Slider scoreSlider;
     [SerializeField] private Vector2 hackPanelOffset;
 
+    [HideInInspector] public bool lockAbility = false;
+
     private FirstPersonController player;
     private Camera mainCamera;
     private HackableObject interactionObject;
@@ -40,6 +42,7 @@ public class HackAbility : MonoBehaviour
 
     private void Update()
     {
+        if (lockAbility) return;
         if (Input.GetKeyDown(player.controls.hackKey))
         {
             if (hackScreen.activeSelf) DeactivateHackAbility();
@@ -107,8 +110,8 @@ public class HackAbility : MonoBehaviour
     public void DeactivateHackAbility()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        Time.timeScale = 1f;
         Cursor.visible = false;
+        Time.timeScale = 1f;
         hackScreen.SetActive(false);
         if (interactionObject && interactionObject.TryGetComponent(out interactionOutline))
         {

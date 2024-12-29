@@ -9,6 +9,13 @@ public class PausePanelController : MonoBehaviour
 
     [HideInInspector] public bool canPause = true;
 
+    private HackAbility hackAbility;
+
+    private void Start()
+    {
+        hackAbility = FindFirstObjectByType<HackAbility>();
+    }
+
     private void Update()
     {
         if (!canPause) return;
@@ -18,6 +25,17 @@ public class PausePanelController : MonoBehaviour
     private void ChangePauseState()
     {
         pausePanel.SetActive(!pausePanel.activeSelf);
+
+        if(hackAbility)
+        {
+            if (pausePanel.activeSelf)
+            {
+                hackAbility.DeactivateHackAbility();
+                hackAbility.lockAbility = true;
+            }
+            else hackAbility.lockAbility = false;
+        }
+
         Time.timeScale = pausePanel.activeSelf ? 0f : 1f;
         Cursor.lockState = pausePanel.activeSelf ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = pausePanel.activeSelf;
@@ -25,10 +43,11 @@ public class PausePanelController : MonoBehaviour
 
     public void OnResumeButtonClick()
     {
-        pausePanel.SetActive(false);
-        Time.timeScale = 1f;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = true;
+        ChangePauseState();
+        //pausePanel.SetActive(false);
+        //Time.timeScale = 1f;
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = true;
     }
 
     public void OnBackToMenuButtonClick()
