@@ -108,9 +108,14 @@ public class TestChamberController : MonoBehaviour
 
     public void RefillAmmo()
     {
-        player.curWeapon.ammo = player.curWeapon.weaponData.ammo;
-        player.curWeapon.ammoInMag = player.curWeapon.weaponData.ammoInMag;
-        player.playerUI.ammoText.text = $"{player.curWeapon.ammoInMag} / {player.curWeapon.ammo}";
+        foreach(WeaponController weapon in FindObjectsByType<WeaponController>(FindObjectsSortMode.None))
+        {
+            weapon.ammoInMag = weapon.weaponData.ammoInMag;
+            weapon.ammo = weapon.weaponData.ammo;
+        }
+        //player.curWeapon.ammo = player.curWeapon.weaponData.ammo;
+        //player.curWeapon.ammoInMag = player.curWeapon.weaponData.ammoInMag;
+        //player.playerUI.ammoText.text = $"{player.curWeapon.ammoInMag} / {player.curWeapon.ammo}";
     }
 
     public void HealPlayer()

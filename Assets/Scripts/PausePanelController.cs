@@ -26,19 +26,21 @@ public class PausePanelController : MonoBehaviour
     {
         pausePanel.SetActive(!pausePanel.activeSelf);
 
+        GameManager.Instance.TogglePause();
+
         if(hackAbility)
         {
             if (pausePanel.activeSelf)
             {
-                hackAbility.DeactivateHackAbility();
+                hackAbility?.DeactivateHackAbility();
                 hackAbility.lockAbility = true;
             }
             else hackAbility.lockAbility = false;
         }
 
-        Time.timeScale = pausePanel.activeSelf ? 0f : 1f;
-        Cursor.lockState = pausePanel.activeSelf ? CursorLockMode.None : CursorLockMode.Locked;
-        Cursor.visible = pausePanel.activeSelf;
+        //Time.timeScale = pausePanel.activeSelf ? 0f : 1f;
+        //Cursor.lockState = pausePanel.activeSelf ? CursorLockMode.None : CursorLockMode.Locked;
+        //Cursor.visible = pausePanel.activeSelf;
     }
 
     public void OnResumeButtonClick()

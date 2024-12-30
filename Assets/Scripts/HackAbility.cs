@@ -22,17 +22,18 @@ public class HackAbility : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private Slider scoreSlider;
     [SerializeField] private Vector2 hackPanelOffset;
+    [Space(10)]
+
+    [SerializeField] private InputSettings controls;
 
     [HideInInspector] public bool lockAbility = false;
 
-    private FirstPersonController player;
     private Camera mainCamera;
     private HackableObject interactionObject;
     private Outline interactionOutline;
 
     private void Start()
     {
-        player = FindFirstObjectByType<FirstPersonController>();
         mainCamera = Camera.main;
         maxScore = score;
         scoreSlider.maxValue = maxScore;
@@ -42,8 +43,9 @@ public class HackAbility : MonoBehaviour
 
     private void Update()
     {
-        if (lockAbility) return;
-        if (Input.GetKeyDown(player.controls.hackKey))
+        if (GameManager.Instance.IsPaused) return;
+
+        if (Input.GetKeyDown(controls.hackKey))
         {
             if (hackScreen.activeSelf) DeactivateHackAbility();
             else ActivateHackAbility();
@@ -102,16 +104,16 @@ public class HackAbility : MonoBehaviour
     public void ActivateHackAbility()
     {
         hackScreen.SetActive(true);
-        Time.timeScale = 0f;
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        //Time.timeScale = 0f;
+        //Cursor.lockState = CursorLockMode.None;
+        //Cursor.visible = true;
     }
 
     public void DeactivateHackAbility()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        Time.timeScale = 1f;
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
+        //Time.timeScale = 1f;
         hackScreen.SetActive(false);
         if (interactionObject && interactionObject.TryGetComponent(out interactionOutline))
         {

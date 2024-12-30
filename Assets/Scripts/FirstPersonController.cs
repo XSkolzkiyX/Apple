@@ -1,3 +1,4 @@
+using DG.Tweening.Core.Easing;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -24,11 +25,6 @@ public class PlayerStats
     public float jumpForce;
     [Space(10)]
 
-    [Header("Interaction")]
-    public float interactionDistance;
-    public float throwingForce;
-    [Space(10)]
-
     [Header("Fall Damage Settings")]
     public float groundCheckDistance = 1.1f;
     public float safeFallDistance = 3f;
@@ -38,245 +34,180 @@ public class PlayerStats
 [System.Serializable]
 public class PlayerCamera
 {
+    [Header("General")]
     public float minCameraAngle;
     public float maxCameraAngle;
     public float sensitivity;
+    [Space(10)]
+
+    [Header("Lean")]
+    public float leanAngle;
+    public float leanSpeed;
+    public Transform leanPoint;
+    [Space(10)]
+
+    [Header("Shake/Bob")]
+    public float walkBobAmplitude = 0.05f;
+    public float walkBobFrequency = 2.0f;
+    public float idleBobAmplitude = 0.01f;
+    public float idleBobFrequency = 0.5f;
+    public float bobRecoverySpeed = 5.0f;
 }
 
-[System.Serializable]
-public class PlayerUI
-{
-    public static Vector2 resolution = new Vector2(1920, 1080);
-    public RectTransform crossHair;
-    public RectTransform alternateCrossHair;
-    public TextMeshProUGUI ammoText;
-}
-
-[System.Serializable]
-public class Controls
-{
-    public KeyCode sprintKey;
-    public KeyCode interactionKey;
-    public KeyCode reloadingKey;
-    public KeyCode dropKey;
-    public KeyCode hackKey;
-}
-
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider))]
 public class FirstPersonController : MonoBehaviour
 {
     public float health;
 
-    public WeaponController curWeapon;
-    public Interaction interaction;
     public PlayerStats playerStats;
     public PlayerCamera playerCamera;
-    public PlayerUI playerUI;
-    public Controls controls;
+    public InputSettings controls;
+
+    private Rigidbody rb;
+    private CapsuleCollider playerCollider;
+    private Camera mainCamera;
 
     private bool isGrounded = false;
-    private float speed;
-    private Camera mainCamera;
-    [HideInInspector] public Rigidbody rb;
-    [HideInInspector] public GameObject interactionObject;
+    private float currentSpeed;
+    private bool isCrouching = false;
+
+    private float originalHeight;
+    private float crouchHeight;
 
     private float moveX, moveY, moveZ;
     private float rotationX, rotationY;
+
+    private Vector3 initialCameraPosition;
+    private float bobTime;
+    private bool isMoving => rb.velocity.magnitude > 0.1f;
+
     private float lastGroundedHeight;
     private bool wasGrounded;
 
     private void Start()
     {
-        mainCamera = Camera.main;
         rb = GetComponent<Rigidbody>();
-        speed = playerStats.walkingSpeed;
+        playerCollider = GetComponent<CapsuleCollider>();
+        mainCamera = Camera.main;
+        initialCameraPosition = mainCamera.transform.localPosition;
+
+        currentSpeed = playerStats.walkingSpeed;
         health = playerStats.health;
+
+        originalHeight = playerCollider.height;
+        crouchHeight = originalHeight / 2f;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        if (curWeapon)
-        {
-            curWeapon.player = this;
-            playerUI.ammoText.text = $"{curWeapon.weaponData.ammoInMag} / {curWeapon.weaponData.ammo}";
-            playerUI.ammoText.color = Color.white;
-            playerUI.crossHair.gameObject.SetActive(true);
-            playerUI.alternateCrossHair.gameObject.SetActive(true);
-        }
-        else
-        {
-            playerUI.ammoText.text = "...";
-            playerUI.ammoText.color = Color.gray;
-            playerUI.crossHair.gameObject.SetActive(false);
-            playerUI.alternateCrossHair.gameObject.SetActive(true);
-        }
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(controls.sprintKey))
-        {
-            speed = playerStats.runningSpeed;
-        }
-        else if(Input.GetKeyUp(controls.sprintKey))
-        {
-            speed = playerStats.walkingSpeed;
-        }
+        if (GameManager.Instance.IsPaused) return;
 
-        moveX = Input.GetAxis("Horizontal") * playerStats.acceleration * rb.mass;
-        moveY = Input.GetAxis("Jump") * playerStats.jumpForce;
-        moveY = isGrounded && moveY > 0 ? moveY : rb.velocity.y;
-        moveZ = Input.GetAxis("Vertical") * playerStats.acceleration * rb.mass;
-
-        //Pick Up Weapon
-
-        if (Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward,
-            out RaycastHit hit, playerStats.interactionDistance, interaction.interactionLayer))
-        {
-            Debug.DrawLine(mainCamera.transform.position, hit.point, Color.red, 1f);
-            if (!hit.transform.gameObject.Equals(interactionObject))
-            {
-                if (interactionObject) interactionObject.GetComponent<Outline>().enabled = false;
-                interactionObject = hit.transform.gameObject;
-                interactionObject.GetComponent<Outline>().enabled = true;
-            }
-        }
-        else if (interactionObject)
-        {
-            interactionObject.GetComponent<Outline>().enabled = false;
-            interactionObject = null;
-        }
-
-        if (Input.GetKeyDown(controls.interactionKey)) Interact();
-        if (Input.GetKeyDown(controls.dropKey)) DropWeapon();
-
-        //Weapon
-        if (!curWeapon) return;
-        if(Input.GetMouseButtonDown(1))
-        {
-            curWeapon.animator.SetBool("Aim", true);
-            playerUI.crossHair.gameObject.SetActive(false);
-            playerUI.alternateCrossHair.gameObject.SetActive(false);
-            curWeapon.shootingSpread = curWeapon.weaponData.aimShootingSpread;
-        }
-        else if(Input.GetMouseButtonUp(1))
-        {
-            curWeapon.animator.SetBool("Aim", false);
-            playerUI.crossHair.gameObject.SetActive(true);
-            playerUI.alternateCrossHair.gameObject.SetActive(true);
-            curWeapon.shootingSpread = curWeapon.weaponData.shootingSpread;
-        }
-
-        if(Input.GetMouseButtonDown(0) && !curWeapon.isShooting && !curWeapon.isReloading)
-        {
-            curWeapon.isShooting = true;
-            curWeapon.Shoot();
-        }
-        else if(Input.GetMouseButtonUp(0) && curWeapon.isShooting)
-        {
-            curWeapon.isShooting = false;
-        }
-
-        if(Input.GetKeyDown(controls.reloadingKey))
-        {
-            curWeapon.StartCoroutine(curWeapon.Reload());
-        }
+        HandleMovementInput();
+        HandleViewRotation();
+        HandleCrouch();
     }
 
     private void FixedUpdate()
     {
+        PerformMovement();
         CheckGroundState();
+        HandleCameraBobbing();
+    }
 
-        //Movement
-        rb.AddForce(transform.right * moveX + transform.forward * moveZ);
+    private void HandleMovementInput()
+    {
+        moveX = Input.GetAxis("Horizontal") * currentSpeed * rb.mass;
+        moveZ = Input.GetAxis("Vertical") * currentSpeed * rb.mass;
 
-        //Jump and Limits
-        rb.velocity = new Vector3(Mathf.Clamp(rb.velocity.x, -speed, speed), moveY, Mathf.Clamp(rb.velocity.z, -speed, speed));
+        if (Input.GetKey(controls.sprintKey) && !isCrouching)
+        {
+            currentSpeed = playerStats.runningSpeed;
+        }
+        else
+        {
+            currentSpeed = playerStats.walkingSpeed;
+        }
 
-        rotationX = Input.GetAxis("Mouse X") * playerCamera.sensitivity * Time.timeScale;
-        rotationY = mainCamera.transform.localEulerAngles.x - Input.GetAxis("Mouse Y") * playerCamera.sensitivity * Time.timeScale;
+        moveY = isGrounded && Input.GetButtonDown("Jump") ? playerStats.jumpForce : rb.velocity.y;
+    }
+
+    private void PerformMovement()
+    {
+        Vector3 moveDirection = transform.right * moveX + transform.forward * moveZ;
+        rb.AddForce(moveDirection * playerStats.acceleration, ForceMode.Force);
+
+        rb.velocity = new Vector3(Mathf.Clamp(rb.velocity.x, -currentSpeed, currentSpeed), moveY, Mathf.Clamp(rb.velocity.z, -currentSpeed, currentSpeed));
+    }
+
+    private void HandleViewRotation()
+    {
+        rotationX = Input.GetAxis("Mouse X") * playerCamera.sensitivity;
+        rotationY -= Input.GetAxis("Mouse Y") * playerCamera.sensitivity;
+
+        rotationY = Mathf.Clamp(rotationY, playerCamera.minCameraAngle, playerCamera.maxCameraAngle);
 
         transform.Rotate(0, rotationX, 0);
+        mainCamera.transform.localEulerAngles = new Vector3(rotationY, 0, 0);
 
-        if (rotationY > 180) rotationY -= 360;
-        rotationY = Mathf.Clamp(rotationY, playerCamera.minCameraAngle, playerCamera.maxCameraAngle);
-        if (rotationY < 0) rotationY += 360;
+        float targetLeanAngle = playerCamera.leanAngle * Input.GetAxis("Lean");
+        float currentLeanAngle = playerCamera.leanPoint.localEulerAngles.z;
 
-        mainCamera.transform.localEulerAngles = new Vector3(rotationY, 0, mainCamera.transform.localEulerAngles.z);
+        if (currentLeanAngle > 180) currentLeanAngle -= 360;
+
+        float newLeanAngle = Mathf.Lerp(currentLeanAngle, targetLeanAngle, Time.deltaTime * playerCamera.leanSpeed);
+        playerCamera.leanPoint.localEulerAngles = new Vector3(0, 0, newLeanAngle);
     }
 
-    private void Interact()
+    private void HandleCameraBobbing()
     {
-        if (!interactionObject) return;
-        if (interactionObject.TryGetComponent(out WeaponController weapon)) PickUpWeapon(weapon);
-        else if (interactionObject.TryGetComponent(out DoorController door)) door.ChangeDoorState();
-        else if (interactionObject.TryGetComponent(out ButtonController button)) button.PressButton();
-        else if (interactionObject.TryGetComponent(out BarrelController barrel)) barrel.StartCoroutine(barrel.Explode(3));
-    }
+        float bobAmplitude = isMoving ? playerCamera.walkBobAmplitude : playerCamera.idleBobAmplitude;
+        float bobFrequency = isMoving ? playerCamera.walkBobFrequency : playerCamera.idleBobFrequency;
 
-    private void PickUpWeapon(WeaponController weapon)
-    {
-        if (!interactionObject) return;
-        if (curWeapon) DropWeapon();
-        curWeapon = weapon;
-        curWeapon.player = this;
-        curWeapon.transform.SetParent(interaction.weaponPlace);
-        curWeapon.animator.enabled = true;
-        //curWeapon.transform.position = weapon.weaponPlace.position;
-        //curWeapon.transform.rotation = weapon.weaponPlace.rotation;
-        curWeapon.weaponRigidbody.isKinematic = true;
-        curWeapon.weaponCollider.enabled = false;
-        curWeapon.weaponOutline.enabled = false;
-        //interactionObject.layer = interaction.itemLayer;
-        interactionObject = null;
-
-        playerUI.ammoText.text = $"{curWeapon.ammoInMag} / {curWeapon.ammo}";
-        playerUI.ammoText.color = Color.white;
-        playerUI.crossHair.gameObject.SetActive(true);
-        playerUI.alternateCrossHair.gameObject.SetActive(true);
-    }
-
-    private void DropWeapon()
-    {
-        if (!curWeapon) return;
-        curWeapon.animator.enabled = false;
-        curWeapon.transform.SetParent(null);
-        curWeapon.weaponRigidbody.isKinematic = false;
-        curWeapon.weaponCollider.enabled = true;
-        curWeapon.player = null;
-        curWeapon.weaponRigidbody.velocity = mainCamera.transform.forward * playerStats.throwingForce;
-        //curWeapon.gameObject.layer = interaction.interactionLayer;
-        curWeapon.animator.SetBool("Aim", false);
-        curWeapon.isReloading = false;
-        curWeapon = null;
-        playerUI.crossHair.gameObject.SetActive(false);
-        playerUI.alternateCrossHair.gameObject.SetActive(true);
-        playerUI.ammoText.text = "...";
-        playerUI.ammoText.color = Color.gray;
-    }
-
-    public void TakeDamage(float damage)
-    {
-        health -= damage;
-        if (health <= 0)
+        if (isMoving)
         {
-            Die();
+            bobTime += Time.deltaTime * bobFrequency;
         }
+        else
+        {
+            bobTime = Mathf.Lerp(bobTime, 0, Time.deltaTime * playerCamera.bobRecoverySpeed);
+        }
+
+        float verticalOffset = Mathf.Sin(bobTime) * bobAmplitude;
+        float horizontalOffset = Mathf.Cos(bobTime * 2) * bobAmplitude * 0.5f;
+
+        mainCamera.transform.localPosition = new Vector3(initialCameraPosition.x + horizontalOffset,
+                                               initialCameraPosition.y + verticalOffset,
+                                               initialCameraPosition.z);
     }
 
-    public void Die()
+
+    private void HandleCrouch()
     {
-        Debug.Log("Player is DEAD");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if (Input.GetKey(controls.crouchKey) && !isCrouching)
+        {
+            isCrouching = true;
+            playerCollider.height = crouchHeight;
+            currentSpeed = playerStats.walkingSpeed / 2;
+        }
+        else if (isCrouching)
+        {
+            isCrouching = false;
+            playerCollider.height = originalHeight;
+            currentSpeed = playerStats.walkingSpeed;
+        }
     }
 
     private void CheckGroundState()
     {
         Vector3[] rayOrigins = new Vector3[]
         {
-        transform.position + Vector3.down + Vector3.left * 0.5f,  
-        transform.position + Vector3.down + Vector3.right * 0.5f, 
+        transform.position + Vector3.down + Vector3.left * 0.5f,
+        transform.position + Vector3.down + Vector3.right * 0.5f,
         transform.position + Vector3.down + Vector3.forward * 0.5f,
-        transform.position + Vector3.down + Vector3.back * 0.5f 
+        transform.position + Vector3.down + Vector3.back * 0.5f
         };
 
         RaycastHit[] hits = new RaycastHit[rayOrigins.Length];
@@ -299,5 +230,19 @@ public class FirstPersonController : MonoBehaviour
             lastGroundedHeight = transform.position.y;
 
         wasGrounded = isGrounded;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    public void Die()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

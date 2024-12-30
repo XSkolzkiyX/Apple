@@ -14,13 +14,13 @@ public class DevPanel : MonoBehaviour
         player = FindFirstObjectByType<FirstPersonController>();
     }
 
-    private void FixedUpdate()
-    {
-        FillDevText(player.health, player.rb.velocity, player.curWeapon ? player.curWeapon.name : "None", player.interactionObject ? player.interactionObject.name : "None");
-    }
-
-    private void FillDevText(float health, Vector3 velocity, string weapon, string interactionObject)
-    {
-        devText.text = $"DevPanel:\n{health}\n{velocity}\n{weapon}\n{interactionObject}";
-    }
+    //private void FixedUpdate()
+    //{
+    //    FillDevText(player.health, player.rb.velocity, player.curWeapon ? player.curWeapon.name : "None", player.interactionObject ? player.interactionObject.name : "None");
+    //}
+    //
+    //private void FillDevText(float health, Vector3 velocity, string weapon, string interactionObject)
+    //{
+    //    devText.text = $"DevPanel:\n{health}\n{velocity}\n{weapon}\n{interactionObject}";
+    //}
 }

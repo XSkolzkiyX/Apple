@@ -410,6 +410,51 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &15420026
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 15420028}
+  - component: {fileID: 15420027}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &15420027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 15420026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce12059a3546733498e9e6555f971e75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsPaused: 0
+--- !u!4 &15420028
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 15420026}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &16784603
 GameObject:
   m_ObjectHideFlags: 0
@@ -14735,6 +14780,7 @@ GameObject:
   - component: {fileID: 1092000054}
   - component: {fileID: 1092000053}
   - component: {fileID: 1092000057}
+  - component: {fileID: 1092000058}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -14845,6 +14891,21 @@ MonoBehaviour:
   pausePanel: {fileID: 328482483}
   crossFadeAnimator: {fileID: 1557712328}
   canPause: 1
+--- !u!114 &1092000058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1092000052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efef6ba3088c7054fbc3991af82e988d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  crossHair: {fileID: 1562039579}
+  alternateCrossHair: {fileID: 367671322}
+  ammoText: {fileID: 248661148}
 --- !u!43 &1092710204
 Mesh:
   m_ObjectHideFlags: 0
@@ -16621,7 +16682,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1212058866
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21297,7 +21358,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1562039579
 RectTransform:
   m_ObjectHideFlags: 0
@@ -26261,6 +26322,39 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1947688499}
   m_CullTransparentMesh: 1
+--- !u!1 &1962926866
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1962926867}
+  m_Layer: 0
+  m_Name: LeanPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1962926867
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1962926866}
+  serializedVersion: 2
+  m_LocalRotation: {x: -9.83367e-10, y: -0.000000052154057, z: -0.00000008043352,
+    w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2546799372071824092}
+  m_Father: {fileID: 6687284751459870624}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1983508276
 GameObject:
   m_ObjectHideFlags: 0
@@ -30074,14 +30168,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9222325795807461998}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3485677171898938509}
   - {fileID: 317148382313169898}
-  m_Father: {fileID: 6687284751459870624}
+  m_Father: {fileID: 1962926867}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &2547814712775649863
 MeshRenderer:
@@ -33729,6 +33823,8 @@ GameObject:
   - component: {fileID: 7346230082334035290}
   - component: {fileID: 7346230082334035291}
   - component: {fileID: 7346230082334035292}
+  - component: {fileID: 7346230082334035293}
+  - component: {fileID: 7346230082334035294}
   - component: {fileID: 6095936569878514983}
   - component: {fileID: 5056573296870263597}
   m_Layer: 0
@@ -34834,7 +34930,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2546799372071824092}
+  - {fileID: 1962926867}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -12.03, z: 0}
 --- !u!114 &6727668136549616062
@@ -35208,23 +35304,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
-  curWeapon: {fileID: 0}
-  interaction:
-    interactionLayer:
-      serializedVersion: 2
-      m_Bits: 256
-    itemLayer:
-      serializedVersion: 2
-      m_Bits: 8
-    weaponPlace: {fileID: 3485677171898938509}
   playerStats:
     health: 1000
-    acceleration: 20
+    acceleration: 10
     walkingSpeed: 4
     runningSpeed: 8
     jumpForce: 5
-    interactionDistance: 2.5
-    throwingForce: 5
     groundCheckDistance: 0.1
     safeFallDistance: 3
     fallDamageMultiplier: 100
@@ -35232,18 +35317,15 @@ MonoBehaviour:
     minCameraAngle: -80
     maxCameraAngle: 80
     sensitivity: 0.75
-  playerUI:
-    crossHair: {fileID: 1562039579}
-    alternateCrossHair: {fileID: 367671322}
-    ammoText: {fileID: 248661148}
-  controls:
-    sprintKey: 304
-    interactionKey: 101
-    reloadingKey: 114
-    dropKey: 120
-    hackKey: 9
-  rb: {fileID: 0}
-  interactionObject: {fileID: 0}
+    leanAngle: 15
+    leanSpeed: 3
+    leanPoint: {fileID: 1962926867}
+    walkBobAmplitude: 0.05
+    walkBobFrequency: 1
+    idleBobAmplitude: 0.01
+    idleBobFrequency: 0.5
+    bobRecoverySpeed: 5
+  controls: {fileID: 11400000, guid: 03da3bf830a6f2f46b2e03eaff0c016c, type: 2}
 --- !u!114 &7346230082334035291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35269,6 +35351,7 @@ MonoBehaviour:
   scoreText: {fileID: 882367834}
   scoreSlider: {fileID: 1207290491}
   hackPanelOffset: {x: 0, y: 50}
+  controls: {fileID: 11400000, guid: 03da3bf830a6f2f46b2e03eaff0c016c, type: 2}
   lockAbility: 0
 --- !u!114 &7346230082334035292
 MonoBehaviour:
@@ -35285,6 +35368,39 @@ MonoBehaviour:
   grabDistance: 2.5
   grabSpeed: 6.5
   grabDelta: 0.25
+--- !u!114 &7346230082334035293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5011306065840345483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bd37f507759be04b9866ab6f0510023, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputSettings: {fileID: 11400000, guid: 03da3bf830a6f2f46b2e03eaff0c016c, type: 2}
+  weaponHolder: {fileID: 3485677171898938509}
+  equippedWeapon: {fileID: 0}
+--- !u!114 &7346230082334035294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5011306065840345483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cce4a0480ece33d45ace47f641011c77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputSettings: {fileID: 11400000, guid: 03da3bf830a6f2f46b2e03eaff0c016c, type: 2}
+  interactionLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  interactionDistance: 2.5
+  throwingForce: 15
 --- !u!23 &7383984957015572327
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -36817,4 +36933,5 @@ SceneRoots:
   - {fileID: 6687284751459870624}
   - {fileID: 1092000056}
   - {fileID: 1204903798}
+  - {fileID: 15420028}
   - {fileID: 1623753726}
