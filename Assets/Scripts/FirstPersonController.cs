@@ -208,7 +208,7 @@ public class FirstPersonController : MonoBehaviour
         curWeapon.weaponRigidbody.isKinematic = true;
         curWeapon.weaponCollider.enabled = false;
         curWeapon.weaponOutline.enabled = false;
-        interactionObject.layer = interaction.itemLayer;
+        //interactionObject.layer = interaction.itemLayer;
         interactionObject = null;
 
         playerUI.ammoText.text = $"{curWeapon.ammoInMag} / {curWeapon.ammo}";
@@ -226,7 +226,7 @@ public class FirstPersonController : MonoBehaviour
         curWeapon.weaponCollider.enabled = true;
         curWeapon.player = null;
         curWeapon.weaponRigidbody.velocity = mainCamera.transform.forward * playerStats.throwingForce;
-        curWeapon.gameObject.layer = interaction.interactionLayer;
+        //curWeapon.gameObject.layer = interaction.interactionLayer;
         curWeapon.animator.SetBool("Aim", false);
         curWeapon.isReloading = false;
         curWeapon = null;
