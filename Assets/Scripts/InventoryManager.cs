@@ -38,6 +38,7 @@ public class InventoryManager : MonoBehaviour
     private int activeSlotIndex = 0;
     private ItemController interactionObject;
     private Camera mainCamera;
+    private Item activeItem;
 
     private void Start()
     {
@@ -54,6 +55,11 @@ public class InventoryManager : MonoBehaviour
             input - 1 < inventoryItems.Count && input - 1 >= 0)
         {
             SelectItem(input - 1);
+        }
+
+        if(Input.GetKeyDown(interactionKey) && itemPlace.childCount > 0)
+        {
+            activeItem.UseItem();
         }
     }
 
@@ -83,7 +89,9 @@ public class InventoryManager : MonoBehaviour
         if (itemPlace.childCount > 0) Destroy(itemPlace.GetChild(0).gameObject);
         activeSlotIndex = newIndex;
         inventorySlots[activeSlotIndex].selectionOutline.SetActive(true);
-        if (inventoryItems[activeSlotIndex]) Instantiate(inventoryItems[activeSlotIndex].model, itemPlace.position, itemPlace.rotation, itemPlace);
+        if (inventoryItems[activeSlotIndex])
+            activeItem = Instantiate(inventoryItems[activeSlotIndex].model,
+                itemPlace.position, itemPlace.rotation, itemPlace).GetComponent<Item>();
     }
 
     private void PickUpItem()
@@ -111,7 +119,7 @@ public class InventoryManager : MonoBehaviour
         item.GetComponent<Rigidbody>().velocity = itemPlace.forward * throwForce;
         inventorySlots[activeSlotIndex].iconImage.sprite = null;
         inventorySlots[activeSlotIndex].durabilitySlider.gameObject.SetActive(false);
-        if (itemPlace.childCount > 0) Destroy(itemPlace.GetChild(0).gameObject);
+        activeItem.DropItem();
         inventoryItems[activeSlotIndex] = null;
     }
 }

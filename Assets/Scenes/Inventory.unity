@@ -591,7 +591,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   itemPlace: {fileID: 1309957404}
-  throwForce: 20
+  throwForce: 1
   interactionDistance: 10
   interactionLayer:
     serializedVersion: 2
