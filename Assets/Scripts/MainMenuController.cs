@@ -16,12 +16,20 @@ public class MainMenuController : MonoBehaviour
     [Space(10)]
 
     [Header("Settings")]
+    [Header("Video Settings")]
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     [SerializeField] private Toggle fullscreenToggle;
     [SerializeField] private Toggle vsyncToggle;
     [SerializeField] private Slider frameLimitSlider;
     [SerializeField] private TextMeshProUGUI frameLimitText;
     [SerializeField] private Vector2Int[] resolutions;
+    [Space(10)]
+    [Header("Graphic Settings")]
+    [SerializeField] private TMP_Dropdown qualityDropdown;
+    [Space(10)]
+    [Header("Audio Settings")]
+    [SerializeField] private Slider masterVolumeSlider;
+    [SerializeField] private TextMeshProUGUI masterVolumeText;
     [Space(10)]
 
     [SerializeField] private List<string> tipTexts;
@@ -75,6 +83,18 @@ public class MainMenuController : MonoBehaviour
         int frameLimit = frameLimitSlider.value >= frameLimitSlider.maxValue ? -1 : (int)frameLimitSlider.value * frameScale;
         Application.targetFrameRate = frameLimit;
         frameLimitText.text = frameLimit < 0 ? "-" : frameLimit.ToString();
+    }
+
+    public void OnQualityChanged()
+    {
+        QualitySettings.SetQualityLevel(qualityDropdown.value);
+    }
+
+    public void OnMasterVolumeChanged()
+    {
+        masterVolumeText.text = masterVolumeSlider.value.ToString();
+        float masterVolume = masterVolumeSlider.value / 100.0f;
+        AudioListener.volume = masterVolume;
     }
 
     private void ApplicationQuit()
