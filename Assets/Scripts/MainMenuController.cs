@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,16 +8,26 @@ using UnityEngine.UI;
 
 public class MainMenuController : MonoBehaviour
 {
-    [Header("UI")]
+    [Header("Loading")]
     [SerializeField] private Slider loadingProgressBarSlider;
     [SerializeField] private TextMeshProUGUI tipText;
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] private Animator crossFadeAnimator;
     [Space(10)]
 
+    [Header("Settings")]
+    [SerializeField] private TMP_Dropdown resolutionDropdown;
+    [SerializeField] private Toggle fullscreenToggle;
+    [SerializeField] private Toggle vsyncToggle;
+    [SerializeField] private Slider frameLimitSlider;
+    [SerializeField] private TextMeshProUGUI frameLimitText;
+    [SerializeField] private Vector2Int[] resolutions;
+    [Space(10)]
+
     [SerializeField] private List<string> tipTexts;
 
     private AsyncOperation loadingProgress;
+    private int frameScale = 30;
 
     private void Start()
     {
@@ -36,6 +47,34 @@ public class MainMenuController : MonoBehaviour
         loadingScreen.SetActive(false);
         crossFadeAnimator.SetBool("Fade", true);
         Invoke(nameof(ApplicationQuit), 1f);
+    }
+
+    public void OnSaveSettingsButtonClick()
+    {
+
+    }
+
+    public void OnResolutionChanged()
+    {
+        Vector2Int selectedResolution = resolutions[resolutionDropdown.value];
+        Screen.SetResolution(selectedResolution.x, selectedResolution.y, Screen.fullScreen);
+    }
+
+    public void OnFullScreenToggle()
+    {
+        Screen.fullScreen = fullscreenToggle.isOn;
+    }
+
+    public void OnVSyncToggle()
+    {
+        QualitySettings.vSyncCount = vsyncToggle ? 1 : 0;
+    }
+
+    public void OnFrameLimitChanged()
+    {
+        int frameLimit = frameLimitSlider.value >= frameLimitSlider.maxValue ? -1 : (int)frameLimitSlider.value * frameScale;
+        Application.targetFrameRate = frameLimit;
+        frameLimitText.text = frameLimit < 0 ? "-" : frameLimit.ToString();
     }
 
     private void ApplicationQuit()
