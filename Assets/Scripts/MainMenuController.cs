@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -29,7 +31,13 @@ public class MainMenuController : MonoBehaviour
     [Space(10)]
     [Header("Audio Settings")]
     [SerializeField] private Slider masterVolumeSlider;
+    [SerializeField] private Slider musicVolumeSlider;
+    [SerializeField] private Slider effectsVolumeSlider;
     [SerializeField] private TextMeshProUGUI masterVolumeText;
+    [SerializeField] private TextMeshProUGUI musicVolumeText;
+    [SerializeField] private TextMeshProUGUI effectsVolumeText;
+
+    [SerializeField] private AudioMixer main;
     [Space(10)]
 
     [SerializeField] private List<string> tipTexts;
@@ -95,6 +103,14 @@ public class MainMenuController : MonoBehaviour
         masterVolumeText.text = masterVolumeSlider.value.ToString();
         float masterVolume = masterVolumeSlider.value / 100.0f;
         AudioListener.volume = masterVolume;
+    }
+
+    public void OnMusicVolumeChanged()
+    {
+        musicVolumeText.text = musicVolumeSlider.value.ToString();
+        float musicVolume = musicVolumeSlider.value > 0 ? Mathf.Log10(musicVolumeSlider.value / 100.0f) * 20.0f : -80.0f;
+        main.SetFloat("MusicVolume", musicVolume);
+        //AudioListener.volume = masterVolume;
     }
 
     private void ApplicationQuit()
