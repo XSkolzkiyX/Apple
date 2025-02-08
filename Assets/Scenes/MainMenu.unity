@@ -6849,7 +6849,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1480208289}
         m_TargetAssemblyTypeName: MainMenuController, Assembly-CSharp
-        m_MethodName: OnMasterVolumeChanged
+        m_MethodName: OnEffectsVolumeChanged
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10206,7 +10206,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!82 &1315247128
 AudioSource:
   m_ObjectHideFlags: 0
@@ -14549,7 +14549,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!82 &2024480707
 AudioSource:
   m_ObjectHideFlags: 0
@@ -14984,7 +14984,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!82 &2070071770
 AudioSource:
   m_ObjectHideFlags: 0
@@ -15522,6 +15522,6 @@ SceneRoots:
   - {fileID: 1575051727}
   - {fileID: 450532942}
   - {fileID: 406376179}
+  - {fileID: 713512094}
   - {fileID: 563168966}
   - {fileID: 1480208290}
-  - {fileID: 713512094}

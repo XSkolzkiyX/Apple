@@ -110,7 +110,13 @@ public class MainMenuController : MonoBehaviour
         musicVolumeText.text = musicVolumeSlider.value.ToString();
         float musicVolume = musicVolumeSlider.value > 0 ? Mathf.Log10(musicVolumeSlider.value / 100.0f) * 20.0f : -80.0f;
         main.SetFloat("MusicVolume", musicVolume);
-        //AudioListener.volume = masterVolume;
+    }
+
+    public void OnEffectsVolumeChanged()
+    {
+        effectsVolumeText.text = effectsVolumeSlider.value.ToString();
+        float sfxVolume = effectsVolumeSlider.value > 0 ? Mathf.Log10(effectsVolumeSlider.value / 100.0f) * 20.0f : -80.0f;
+        main.SetFloat("SFXVolume", sfxVolume);
     }
 
     private void ApplicationQuit()
