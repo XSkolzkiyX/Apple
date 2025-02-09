@@ -9,7 +9,7 @@ public class WeaponController : MonoBehaviour
 
     public int ammoInMag;
     public int ammo;
-    
+
     [HideInInspector] public Animator animator;
     [HideInInspector] public Rigidbody weaponRigidbody;
     [HideInInspector] public Collider weaponCollider;

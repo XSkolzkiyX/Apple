@@ -58,7 +58,7 @@ public class FirstPersonController : MonoBehaviour
     public PlayerStats playerStats;
     public PlayerCamera playerCamera;
     public PlayerUI playerUI;
-    public Controls controls;
+    public InputSettings controls;
 
     private bool isGrounded = false;
     private float speed;
@@ -130,19 +130,19 @@ public class FirstPersonController : MonoBehaviour
             interactionObject = null;
         }
 
-        if (Input.GetKeyDown(controls.interactionKey)) Interact();
+        if (Input.GetKeyDown(controls.interactKey)) Interact();
         if (Input.GetKeyDown(controls.dropKey)) DropWeapon();
 
         //Weapon
         if (!curWeapon) return;
-        if(Input.GetMouseButtonDown(1))
+        if(Input.GetKeyDown(controls.aimKey))
         {
             curWeapon.animator.SetBool("Aim", true);
             playerUI.crossHair.gameObject.SetActive(false);
             playerUI.alternateCrossHair.gameObject.SetActive(false);
             curWeapon.shootingSpread = curWeapon.weaponData.aimShootingSpread;
         }
-        else if(Input.GetMouseButtonUp(1))
+        else if(Input.GetKeyUp(controls.aimKey))
         {
             curWeapon.animator.SetBool("Aim", false);
             playerUI.crossHair.gameObject.SetActive(true);
@@ -150,17 +150,17 @@ public class FirstPersonController : MonoBehaviour
             curWeapon.shootingSpread = curWeapon.weaponData.shootingSpread;
         }
 
-        if(Input.GetMouseButtonDown(0) && !curWeapon.isShooting && !curWeapon.isReloading)
+        if(Input.GetKeyDown(controls.shootKey) && !curWeapon.isShooting && !curWeapon.isReloading)
         {
             curWeapon.isShooting = true;
             curWeapon.Shoot();
         }
-        else if(Input.GetMouseButtonUp(0) && curWeapon.isShooting)
+        else if(Input.GetKeyUp(controls.shootKey) && curWeapon.isShooting)
         {
             curWeapon.isShooting = false;
         }
 
-        if(Input.GetKeyDown(controls.reloadingKey))
+        if(Input.GetKeyDown(controls.reloadKey))
         {
             curWeapon.StartCoroutine(curWeapon.Reload());
         }

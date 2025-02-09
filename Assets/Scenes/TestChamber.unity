@@ -34916,12 +34916,7 @@ MonoBehaviour:
     crossHair: {fileID: 1562039579}
     alternateCrossHair: {fileID: 367671322}
     ammoText: {fileID: 248661148}
-  controls:
-    sprintKey: 304
-    interactionKey: 101
-    reloadingKey: 114
-    dropKey: 120
-    hackKey: 9
+  controls: {fileID: 11400000, guid: f84ece83a189d4b43b0cac59ebc30df1, type: 2}
   rb: {fileID: 0}
   interactionObject: {fileID: 0}
 --- !u!114 &7346230082334035291
