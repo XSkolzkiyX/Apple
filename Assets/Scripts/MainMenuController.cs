@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -143,7 +144,7 @@ public class MainMenuController : MonoBehaviour
 
     public void OnVSyncToggle()
     {
-        QualitySettings.vSyncCount = vsyncToggle ? 1 : 0;
+        QualitySettings.vSyncCount = vsyncToggle.isOn ? 1 : 0;
     }
 
     public void OnFrameLimitChanged()

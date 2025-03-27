@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75c696d9215bee14e8ff6fdeee7be1d4, type: 3}
+  m_Name: Rifle
+  m_EditorClassIdentifier: 
+  damage: 250
+  ammoInMag: 4
+  ammo: 32
+  bulletsPerShot: 1
+  fireRate: 0
+  aimShootingSpread: 0
+  shootingSpread: 8
+  maxShootingSpread: 16
+  shootingSpreadIncreaseValue: 3
+  shootingSpreadDecreaseValue: 0.1
+  verticalSpray: 4
+  horizontalSpray:
+    leftDirection: 2
+    rightDirection: 1
+  reloadingDuration: 4
+  bulletSpeed: 65
+  bulletPrefab: {fileID: 3882421529995028313, guid: a3d259b3e192e3e409811f909c1f6e0a,
+    type: 3}
+  weaponModel: {fileID: 4677765151892386226, guid: 2e89a0d30f6ed234d8fd05557b92fa1b,
+    type: 3}
