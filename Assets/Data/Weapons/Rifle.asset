@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Rifle
   m_EditorClassIdentifier: 
   damage: 250
-  ammoInMag: 4
+  ammoInMag: 5
   ammo: 32
   bulletsPerShot: 1
   fireRate: 0
