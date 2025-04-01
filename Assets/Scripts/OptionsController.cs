@@ -1,8 +1,8 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class OptionsController : MonoBehaviour
@@ -24,6 +24,16 @@ public class OptionsController : MonoBehaviour
 
     [Header("Graphic Panel")]
     [SerializeField] private TMP_Dropdown qualityDropdown;
+    [Space(10)]
+
+    [Header("Audio")]
+    [SerializeField] private Slider masterVolumeSlider;
+    [SerializeField] private Slider musicVolumeSlider;
+    [SerializeField] private Slider effectsVolumeSlider;
+    [SerializeField] private TextMeshProUGUI masterVolumeText;
+    [SerializeField] private TextMeshProUGUI musicVolumeText;
+    [SerializeField] private TextMeshProUGUI effectsVolumeText;
+    [SerializeField] private AudioMixer main;
 
     private void Start()
     {
@@ -58,6 +68,27 @@ public class OptionsController : MonoBehaviour
         QualitySettings.SetQualityLevel(qualityDropdown.value);
     }
 
+    public void OnMasterVolumeChanged()
+    {
+        AudioListener.volume = masterVolumeSlider.value;
+        //masterVolumeText.text = Mathf.RoundToInt(masterVolumeSlider.value * 100).ToString();
+        masterVolumeText.text = Math.Round(masterVolumeSlider.value, 1).ToString();
+    }
+
+    public void OnMusicVolumeChanged()
+    {
+        main.SetFloat("Music", musicVolumeSlider.value);
+        double volume = Math.Round((musicVolumeSlider.value - musicVolumeSlider.minValue) / (musicVolumeSlider.maxValue - musicVolumeSlider.minValue), 1);
+        musicVolumeText.text = volume.ToString();
+    }
+
+    public void OnEffectsVolumeChanged()
+    {
+        main.SetFloat("Effects", effectsVolumeSlider.value);
+        double volume = Math.Round((effectsVolumeSlider.value - effectsVolumeSlider.minValue) / (effectsVolumeSlider.maxValue - effectsVolumeSlider.minValue), 1);
+        effectsVolumeText.text = volume.ToString();
+    }
+
     public void SaveOptions()
     {
         playerSettings.resolutionIndex = resolutionDropdown.value;
@@ -67,12 +98,20 @@ public class OptionsController : MonoBehaviour
 
         playerSettings.qualityIndex = qualityDropdown.value;
 
+        playerSettings.masterVolume = masterVolumeSlider.value;
+        playerSettings.musicVolume = (int)musicVolumeSlider.value;
+        playerSettings.effectsVolume = (int)effectsVolumeSlider.value;
+
         PlayerPrefs.SetInt("Resolution", playerSettings.resolutionIndex);
         PlayerPrefs.SetString("Fullscreen", playerSettings.fullscreen.ToString());
         PlayerPrefs.SetString("Vsync", playerSettings.vsync.ToString());
         PlayerPrefs.SetInt("Frame Limit", playerSettings.frameLimit);
 
         PlayerPrefs.SetInt("Quality", playerSettings.qualityIndex);
+
+        PlayerPrefs.SetFloat("MasterVolume", playerSettings.masterVolume);
+        PlayerPrefs.SetInt("MusicVolume", playerSettings.musicVolume);
+        PlayerPrefs.SetInt("EffectsVolume", playerSettings.effectsVolume);
     }
 
     public void LoadOptions()
@@ -87,6 +126,12 @@ public class OptionsController : MonoBehaviour
             playerSettings.frameLimit = PlayerPrefs.GetInt("Frame Limit");
         if (PlayerPrefs.HasKey("Quality"))
             playerSettings.qualityIndex = PlayerPrefs.GetInt("Quality");
+        if (PlayerPrefs.HasKey("MasterVolume"))
+            playerSettings.masterVolume = PlayerPrefs.GetFloat("MasterVolume");
+        if (PlayerPrefs.HasKey("MusicVolume"))
+            playerSettings.musicVolume = PlayerPrefs.GetInt("MusicVolume");
+        if (PlayerPrefs.HasKey("EffectsVolume"))
+            playerSettings.effectsVolume = PlayerPrefs.GetInt("EffectsVolume");
 
         FillPlayerData();
     }
@@ -100,6 +145,10 @@ public class OptionsController : MonoBehaviour
         frameLimitText.text = playerSettings.frameLimit < 0 ? "-" : playerSettings.frameLimit.ToString();
 
         qualityDropdown.value = playerSettings.qualityIndex;
+
+        masterVolumeSlider.value = playerSettings.masterVolume;
+        musicVolumeSlider.value = playerSettings.musicVolume;
+        effectsVolumeSlider.value = playerSettings.effectsVolume;
     }
 
     public void ResetOptions()
@@ -110,6 +159,10 @@ public class OptionsController : MonoBehaviour
         playerSettings.frameLimit = defaultSettings.frameLimit;
 
         playerSettings.qualityIndex = defaultSettings.qualityIndex;
+
+        playerSettings.masterVolume = defaultSettings.masterVolume;
+        playerSettings.musicVolume = defaultSettings.musicVolume;
+        playerSettings.effectsVolume = defaultSettings.effectsVolume;
         FillPlayerData();
     }
 }

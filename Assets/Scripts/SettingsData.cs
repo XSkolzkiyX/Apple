@@ -14,4 +14,10 @@ public class SettingsData : ScriptableObject
 
     [Header("Graphic")]
     public int qualityIndex = 2;
+    [Space(10)]
+
+    [Header("Audio")]
+    public float masterVolume = 1.0f;
+    public int musicVolume = 20;
+    public int effectsVolume = 20;
 }
