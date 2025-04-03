@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
+using static Unity.VisualScripting.Member;
+using static UnityEngine.GraphicsBuffer;
 
 public class OptionsController : MonoBehaviour
 {
@@ -34,10 +38,49 @@ public class OptionsController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI musicVolumeText;
     [SerializeField] private TextMeshProUGUI effectsVolumeText;
     [SerializeField] private AudioMixer main;
+    [Space(10)]
+
+    [Header("Controls")]
+    [SerializeField] private GameObject rebindPanel;
+    [SerializeField] private TextMeshProUGUI moveForwardText;
+    [SerializeField] private TextMeshProUGUI moveLeftText;
+    [SerializeField] private TextMeshProUGUI moveBackwardText;
+    [SerializeField] private TextMeshProUGUI moveRightText;
+    [SerializeField] private TextMeshProUGUI crouchText;
+    [SerializeField] private TextMeshProUGUI toggleCrouchText;
+    [SerializeField] private TextMeshProUGUI interactText;
+    [SerializeField] private TextMeshProUGUI useText;
+
+    private bool detectKey = false;
+    private KeyCode detectedKey;
+    private string bindKey;
 
     private void Start()
     {
         LoadOptions();
+    }
+
+    private void Update()
+    {
+        if (!detectKey) return;
+        if (Input.anyKeyDown)
+        {
+            foreach (KeyCode key in Enum.GetValues(typeof(KeyCode)))
+            {
+                if (Input.GetKeyDown(key))
+                {
+                    if (key is KeyCode.Escape)
+                    {
+                        CancelControlKeyBind();
+                        return;
+                    }
+                    detectedKey = key;
+                    detectKey = false;
+                    CompleteControlKeyBind();
+                    return;
+                }
+            }
+        }
     }
 
     public void OnResolutionDropdownChanged()
@@ -87,6 +130,13 @@ public class OptionsController : MonoBehaviour
         main.SetFloat("Effects", effectsVolumeSlider.value);
         double volume = Math.Round((effectsVolumeSlider.value - effectsVolumeSlider.minValue) / (effectsVolumeSlider.maxValue - effectsVolumeSlider.minValue), 1);
         effectsVolumeText.text = volume.ToString();
+    }
+
+    public void OnSetControlKeyButtonClick(string key)
+    {
+        detectedKey = KeyCode.None;
+        detectKey = true;
+        bindKey = key;
     }
 
     public void SaveOptions()
@@ -149,20 +199,78 @@ public class OptionsController : MonoBehaviour
         masterVolumeSlider.value = playerSettings.masterVolume;
         musicVolumeSlider.value = playerSettings.musicVolume;
         effectsVolumeSlider.value = playerSettings.effectsVolume;
+
+        moveForwardText.text = playerSettings.moveForward.ToString();
+        moveLeftText.text = playerSettings.moveLeft.ToString();
+        moveBackwardText.text = playerSettings.moveBackward.ToString();
+        moveRightText.text = playerSettings.moveRight.ToString();
+        crouchText.text = playerSettings.crouch.ToString();
+        toggleCrouchText.text = playerSettings.toggleCrouch.ToString();
+        interactText.text = playerSettings.interact.ToString();
+        useText.text = playerSettings.use.ToString();
     }
 
     public void ResetOptions()
     {
-        playerSettings.resolutionIndex = defaultSettings.resolutionIndex;
-        playerSettings.fullscreen = defaultSettings.fullscreen;
-        playerSettings.vsync= defaultSettings.vsync;
-        playerSettings.frameLimit = defaultSettings.frameLimit;
+        //playerSettings.resolutionIndex = defaultSettings.resolutionIndex;
+        //playerSettings.fullscreen = defaultSettings.fullscreen;
+        //playerSettings.vsync= defaultSettings.vsync;
+        //playerSettings.frameLimit = defaultSettings.frameLimit;
+        //
+        //playerSettings.qualityIndex = defaultSettings.qualityIndex;
+        //
+        //playerSettings.masterVolume = defaultSettings.masterVolume;
+        //playerSettings.musicVolume = defaultSettings.musicVolume;
+        //playerSettings.effectsVolume = defaultSettings.effectsVolume;
 
-        playerSettings.qualityIndex = defaultSettings.qualityIndex;
-
-        playerSettings.masterVolume = defaultSettings.masterVolume;
-        playerSettings.musicVolume = defaultSettings.musicVolume;
-        playerSettings.effectsVolume = defaultSettings.effectsVolume;
         FillPlayerData();
+    }
+
+    private void CompleteControlKeyBind()
+    {
+        rebindPanel.SetActive(false);
+
+        switch (bindKey)
+        {
+            case "Forward":
+                playerSettings.moveForward = detectedKey;
+                moveForwardText.text = detectedKey.ToString();
+                break;
+            case "Left":
+                playerSettings.moveLeft = detectedKey;
+                moveLeftText.text = detectedKey.ToString();
+                break;
+            case "Back":
+                playerSettings.moveBackward = detectedKey;
+                moveBackwardText.text = detectedKey.ToString();
+                break;
+            case "Right":
+                playerSettings.moveRight = detectedKey;
+                moveRightText.text = detectedKey.ToString();
+                break;
+            case "Crouch":
+                playerSettings.crouch = detectedKey;
+                crouchText.text = detectedKey.ToString();
+                break;
+            case "ToggleCrouch":
+                playerSettings.toggleCrouch = detectedKey;
+                toggleCrouchText.text = detectedKey.ToString();
+                break;
+            case "Interact":
+                playerSettings.interact = detectedKey;
+                interactText.text = detectedKey.ToString();
+                break;
+            case "Use":
+                playerSettings.use = detectedKey;
+                useText.text = detectedKey.ToString();
+                break;
+        }
+    }
+
+    private void CancelControlKeyBind()
+    {
+        detectKey = false;
+        detectedKey = KeyCode.None;
+        rebindPanel.SetActive(false);
     }
 }

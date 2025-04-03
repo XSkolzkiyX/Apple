@@ -243,15 +243,15 @@ public class MainMenuController : MonoBehaviour
         //    }
         //}
 
-        controlKeyTexts[0].text = playerControls.sprintKey.ToString();
-        controlKeyTexts[1].text = playerControls.interactKey.ToString();
-        controlKeyTexts[2].text = playerControls.dropKey.ToString();
-        controlKeyTexts[3].text = playerControls.jumpKey.ToString();
-        controlKeyTexts[4].text = playerControls.pauseKey.ToString();
-        controlKeyTexts[5].text = playerControls.shootKey.ToString();
-        controlKeyTexts[6].text = playerControls.aimKey.ToString();
-        controlKeyTexts[7].text = playerControls.reloadKey.ToString();
-        controlKeyTexts[8].text = playerControls.hackKey.ToString();
+        //controlKeyTexts[0].text = playerControls.sprintKey.ToString();
+        //controlKeyTexts[1].text = playerControls.interactKey.ToString();
+        //controlKeyTexts[2].text = playerControls.dropKey.ToString();
+        //controlKeyTexts[3].text = playerControls.jumpKey.ToString();
+        //controlKeyTexts[4].text = playerControls.pauseKey.ToString();
+        //controlKeyTexts[5].text = playerControls.shootKey.ToString();
+        //controlKeyTexts[6].text = playerControls.aimKey.ToString();
+        //controlKeyTexts[7].text = playerControls.reloadKey.ToString();
+        //controlKeyTexts[8].text = playerControls.hackKey.ToString();
     }
 
     private void ApplicationQuit()

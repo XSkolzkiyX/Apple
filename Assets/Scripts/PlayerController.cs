@@ -152,6 +152,7 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(float damage, bool timer = true)
     {
+        return;
         health -= damage;
         if (health <= 0) Die();
         if(timer) lastTimeDamaged = Time.time;

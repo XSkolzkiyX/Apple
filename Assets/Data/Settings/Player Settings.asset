@@ -12,8 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e226e7b10a8cc54f965839372a7e3a0, type: 3}
   m_Name: Player Settings
   m_EditorClassIdentifier: 
-  resolutionIndex: 2
+  resolutionIndex: 0
   fullscreen: 1
-  vsync: 0
-  frameLimit: -1
+  vsync: 1
+  frameLimit: 60
   qualityIndex: 2
+  masterVolume: 0.22109662
+  musicVolume: -6
+  effectsVolume: -3
+  moveForward: 117
+  moveLeft: 103
+  moveBackward: 115
+  moveRight: 100
+  crouch: 306
+  toggleCrouch: 99
+  interact: 102
+  use: 101

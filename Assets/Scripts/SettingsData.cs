@@ -20,4 +20,15 @@ public class SettingsData : ScriptableObject
     public float masterVolume = 1.0f;
     public int musicVolume = 20;
     public int effectsVolume = 20;
+    [Space(10)]
+
+    [Header("Controls")]
+    public KeyCode moveForward = KeyCode.W;
+    public KeyCode moveLeft = KeyCode.A;
+    public KeyCode moveBackward = KeyCode.S;
+    public KeyCode moveRight = KeyCode.D;
+    public KeyCode crouch = KeyCode.LeftControl;
+    public KeyCode toggleCrouch = KeyCode.C;
+    public KeyCode interact = KeyCode.F;
+    public KeyCode use = KeyCode.E;
 }
