@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Settings", menuName = "Data/Settings Data")]
@@ -31,4 +32,19 @@ public class SettingsData : ScriptableObject
     public KeyCode toggleCrouch = KeyCode.C;
     public KeyCode interact = KeyCode.F;
     public KeyCode use = KeyCode.E;
+
+    private string savePath => Path.Combine(Application.persistentDataPath, "playerSettings.json");
+
+    public void Save()
+    {
+        File.WriteAllText(savePath, JsonUtility.ToJson(this));
+    }
+
+    public void Load()
+    {
+        if (File.Exists(savePath))
+        {
+            JsonUtility.FromJsonOverwrite(File.ReadAllText(savePath), this);
+        }
+    }
 }

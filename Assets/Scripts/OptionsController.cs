@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using TMPro;
 using UnityEditor;
@@ -54,7 +55,7 @@ public class OptionsController : MonoBehaviour
     private bool detectKey = false;
     private KeyCode detectedKey;
     private string bindKey;
-
+    
     private void Start()
     {
         LoadOptions();
@@ -114,7 +115,6 @@ public class OptionsController : MonoBehaviour
     public void OnMasterVolumeChanged()
     {
         AudioListener.volume = masterVolumeSlider.value;
-        //masterVolumeText.text = Mathf.RoundToInt(masterVolumeSlider.value * 100).ToString();
         masterVolumeText.text = Math.Round(masterVolumeSlider.value, 1).ToString();
     }
 
@@ -152,36 +152,12 @@ public class OptionsController : MonoBehaviour
         playerSettings.musicVolume = (int)musicVolumeSlider.value;
         playerSettings.effectsVolume = (int)effectsVolumeSlider.value;
 
-        PlayerPrefs.SetInt("Resolution", playerSettings.resolutionIndex);
-        PlayerPrefs.SetString("Fullscreen", playerSettings.fullscreen.ToString());
-        PlayerPrefs.SetString("Vsync", playerSettings.vsync.ToString());
-        PlayerPrefs.SetInt("Frame Limit", playerSettings.frameLimit);
-
-        PlayerPrefs.SetInt("Quality", playerSettings.qualityIndex);
-
-        PlayerPrefs.SetFloat("MasterVolume", playerSettings.masterVolume);
-        PlayerPrefs.SetInt("MusicVolume", playerSettings.musicVolume);
-        PlayerPrefs.SetInt("EffectsVolume", playerSettings.effectsVolume);
+        playerSettings.Save();
     }
 
     public void LoadOptions()
     {
-        if (PlayerPrefs.HasKey("Resolution")) 
-            playerSettings.resolutionIndex = PlayerPrefs.GetInt("Resolution");
-        if (PlayerPrefs.HasKey("Fullscreen")) 
-            playerSettings.fullscreen = bool.Parse(PlayerPrefs.GetString("Fullscreen"));
-        if (PlayerPrefs.HasKey("Vsync"))
-            playerSettings.vsync = bool.Parse(PlayerPrefs.GetString("Vsync"));
-        if (PlayerPrefs.HasKey("Frame Limit"))
-            playerSettings.frameLimit = PlayerPrefs.GetInt("Frame Limit");
-        if (PlayerPrefs.HasKey("Quality"))
-            playerSettings.qualityIndex = PlayerPrefs.GetInt("Quality");
-        if (PlayerPrefs.HasKey("MasterVolume"))
-            playerSettings.masterVolume = PlayerPrefs.GetFloat("MasterVolume");
-        if (PlayerPrefs.HasKey("MusicVolume"))
-            playerSettings.musicVolume = PlayerPrefs.GetInt("MusicVolume");
-        if (PlayerPrefs.HasKey("EffectsVolume"))
-            playerSettings.effectsVolume = PlayerPrefs.GetInt("EffectsVolume");
+        playerSettings.Load();
 
         FillPlayerData();
     }
@@ -212,16 +188,25 @@ public class OptionsController : MonoBehaviour
 
     public void ResetOptions()
     {
-        //playerSettings.resolutionIndex = defaultSettings.resolutionIndex;
-        //playerSettings.fullscreen = defaultSettings.fullscreen;
-        //playerSettings.vsync= defaultSettings.vsync;
-        //playerSettings.frameLimit = defaultSettings.frameLimit;
-        //
-        //playerSettings.qualityIndex = defaultSettings.qualityIndex;
-        //
-        //playerSettings.masterVolume = defaultSettings.masterVolume;
-        //playerSettings.musicVolume = defaultSettings.musicVolume;
-        //playerSettings.effectsVolume = defaultSettings.effectsVolume;
+        playerSettings.resolutionIndex = defaultSettings.resolutionIndex;
+        playerSettings.fullscreen = defaultSettings.fullscreen;
+        playerSettings.vsync= defaultSettings.vsync;
+        playerSettings.frameLimit = defaultSettings.frameLimit;
+        
+        playerSettings.qualityIndex = defaultSettings.qualityIndex;
+        
+        playerSettings.masterVolume = defaultSettings.masterVolume;
+        playerSettings.musicVolume = defaultSettings.musicVolume;
+        playerSettings.effectsVolume = defaultSettings.effectsVolume;
+
+        playerSettings.moveForward = defaultSettings.moveForward;
+        playerSettings.moveLeft = defaultSettings.moveLeft;
+        playerSettings.moveBackward = defaultSettings.moveBackward;
+        playerSettings.moveRight = defaultSettings.moveRight;
+        playerSettings.crouch = defaultSettings.crouch;
+        playerSettings.toggleCrouch = defaultSettings.toggleCrouch;
+        playerSettings.interact = defaultSettings.interact;
+        playerSettings.use = defaultSettings.use;
 
         FillPlayerData();
     }
