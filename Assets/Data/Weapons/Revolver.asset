@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75c696d9215bee14e8ff6fdeee7be1d4, type: 3}
+  m_Name: Revolver
+  m_EditorClassIdentifier: 
+  damage: 67
+  ammoInMag: 6
+  ammo: 48
+  bulletsPerShot: 1
+  fireRate: 0
+  aimShootingSpread: 0.3
+  shootingSpread: 4
+  maxShootingSpread: 8
+  shootingSpreadIncreaseValue: 0.5
+  shootingSpreadDecreaseValue: 0.25
+  verticalSpray: 2.5
+  horizontalSpray:
+    leftDirection: 0.6
+    rightDirection: 0.3
+  reloadingDuration: 4
+  bulletSpeed: 32
+  bulletPrefab: {fileID: 3882421529995028313, guid: 92e67652fdc342a45b6c43838011b25f,
+    type: 3}
+  weaponModel: {fileID: 1750125871091328788, guid: 1a6e38616f4be1e4bb97f3ab0da26330,
+    type: 3}
