@@ -11,6 +11,9 @@ TagManager:
   - Enemy
   - FxTemporaire
   - Hackable
+  - Ground
+  - Building
+  - Door
   layers:
   - Default
   - TransparentFX
@@ -21,7 +24,7 @@ TagManager:
   - Character
   - Enemy
   - Interaction
-  - 
+  - Building Platform
   - 
   - 
   - 
