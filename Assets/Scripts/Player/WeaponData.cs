@@ -42,5 +42,6 @@ public class WeaponData : ScriptableObject
     [Space(10)]
 
     [Header("Model")]
+    public Sprite weaponIcon;
     public GameObject weaponModel;
 }

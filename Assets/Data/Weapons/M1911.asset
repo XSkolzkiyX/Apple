@@ -30,5 +30,6 @@ MonoBehaviour:
   bulletSpeed: 28
   bulletPrefab: {fileID: 3882421529995028313, guid: 92e67652fdc342a45b6c43838011b25f,
     type: 3}
+  weaponIcon: {fileID: 21300000, guid: e4f705a0fd06f7641957e67a78a8f23e, type: 3}
   weaponModel: {fileID: 1750125871091328788, guid: 1a6e38616f4be1e4bb97f3ab0da26330,
     type: 3}

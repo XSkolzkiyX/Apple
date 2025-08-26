@@ -37,9 +37,8 @@ public class PlayerCamera
 [System.Serializable]
 public class WeaponSlot
 {
-    public Image background;
+    public GameObject slot;
     public Image icon;
-    public Image outline;
 }
 
 [System.Serializable]
@@ -51,6 +50,7 @@ public class PlayerUI
     public TextMeshProUGUI ammoText;
 
     public List<WeaponSlot> weaponSlots;
+    public Image curWeaponImage;
 }
 
 [System.Serializable]
@@ -94,7 +94,12 @@ public class FirstPersonController : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        foreach (var weapon in weapons) weapon.gameObject.SetActive(false);
+        for (int i = 0; i < weapons.Count; i++)
+        {
+            weapons[i].gameObject.SetActive(false);
+            playerUI.weaponSlots[i].icon.sprite = weapons[i].weaponData.weaponIcon;
+        }
+
         if (weapons[curWeaponIndex])
         {
             curWeapon = weapons[curWeaponIndex];
@@ -237,12 +242,13 @@ public class FirstPersonController : MonoBehaviour
         //if(weapon.TryGetComponent(out WeaponController weaponController)) curWeapon = weaponController;
         //if(weapon.TryGetComponent(out MeleeWeaponController meleeWeaponController)) curMeleeWeapon = meleeWeaponController;
         curWeapon.gameObject.SetActive(false);
-        playerUI.weaponSlots[curWeaponIndex].outline.gameObject.SetActive(false);
+        playerUI.weaponSlots[curWeaponIndex].slot.SetActive(true);
         curWeaponIndex = newIndex;
         curWeapon = weapons[curWeaponIndex];
         curWeapon.gameObject.SetActive(true);
         curWeapon.player = this;
-        playerUI.weaponSlots[curWeaponIndex].outline.gameObject.SetActive(true);
+        playerUI.weaponSlots[curWeaponIndex].slot.SetActive(false);
+        playerUI.curWeaponImage.sprite = curWeapon.weaponData.weaponIcon;
         //SetWeaponValues(curWeapon);
         if (curWeapon)
         {
