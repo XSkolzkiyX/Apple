@@ -33,7 +33,7 @@ public class SettingsData : ScriptableObject
     public KeyCode interact = KeyCode.F;
     public KeyCode use = KeyCode.E;
 
-    private string savePath => Path.Combine(Application.persistentDataPath, "playerSettings.json");
+    private string savePath => Path.Combine(Application.persistentDataPath, "PlayerSettings.json");
 
     public void Save()
     {
